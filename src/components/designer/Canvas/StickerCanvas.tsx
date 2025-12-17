@@ -6,40 +6,91 @@
 
 // export default function StickerCanvas() {
 //   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-//   const { setCanvas, setSelectedObject } = useDesigner()
+
+//   const {
+//     setCanvas,
+//     setSelectedObject,
+//     saveSnapshot
+//   } = useDesigner()
 
 //   useEffect(() => {
-//   if (!canvasRef.current) return
+//     if (!canvasRef.current) return
 
-//   const canvas = new fabric.Canvas(canvasRef.current, {
-//     width: 400,
-//     height: 400,
-//     backgroundColor: "#ffffff"
-//   })
+//     const size = 420
 
-//   canvas.on("selection:created", e =>
-//     setSelectedObject(e.selected?.[0] || null)
-//   )
+//     const canvas = new fabric.Canvas(canvasRef.current, {
+//       width: size,
+//       height: size,
+//       backgroundColor: "#ffffff",
+//       preserveObjectStacking: true
+//     })
 
-//   canvas.on("selection:updated", e =>
-//     setSelectedObject(e.selected?.[0] || null)
-//   )
+//     /* ------------------ Circular Clip Mask ------------------ */
+//     const clipCircle = new fabric.Circle({
+//       radius: size / 2,
+//       left: size / 2,
+//       top: size / 2,
+//       originX: "center",
+//       originY: "center",
+//       absolutePositioned: true
+//     })
 
-//   canvas.on("selection:cleared", () =>
-//     setSelectedObject(null)
-//   )
+//     canvas.clipPath = clipCircle
 
-//   setCanvas(canvas)
+//     /* ------------------ Selection Styling ------------------ */
+//     fabric.Object.prototype.transparentCorners = false
+//     fabric.Object.prototype.cornerStyle = "circle"
+//     fabric.Object.prototype.cornerColor = "#000"
+//     fabric.Object.prototype.borderColor = "#000"
+//     fabric.Object.prototype.cornerSize = 8
 
-//   return () => {
-//     // Explicitly ignore the Promise
-//     void canvas.dispose()
-//   }
-// }, [])
+//     /* ------------------ Selection Events ------------------ */
+//     canvas.on("selection:created", e =>
+//       setSelectedObject(e.selected?.[0] || null)
+//     )
+
+//     canvas.on("selection:updated", e =>
+//       setSelectedObject(e.selected?.[0] || null)
+//     )
+
+//     canvas.on("selection:cleared", () =>
+//       setSelectedObject(null)
+//     )
+
+//     /* ------------------ Undo Snapshot ------------------ */
+//     canvas.on("object:modified", saveSnapshot)
+//     canvas.on("object:added", saveSnapshot)
+//     canvas.on("object:removed", saveSnapshot)
+
+//     /* ------------------ Register Canvas ------------------ */
+//     setCanvas(canvas)
+
+//     /* ------------------ Load Draft ------------------ */
+//     const raw = localStorage.getItem("sticker-designer-draft")
+
+//     if (raw) {
+//       canvas.loadFromJSON(JSON.parse(raw), () => {
+//         canvas.calcOffset()
+
+//         // 🔥 Force render AFTER Fabric finishes layout
+//         requestAnimationFrame(() => {
+//           canvas.requestRenderAll()
+//         })
+//       })
+//     }
+
+//     saveSnapshot()
+
+//     return () => {
+//       canvas.dispose()
+//     }
+//   }, [])
 
 //   return (
-//     <div className="rounded-full bg-white shadow-lg p-4">
-//       <canvas ref={canvasRef} />
+//     <div className="relative">
+//       <div className="rounded-full bg-white shadow-2xl border border-gray-400">
+//         <canvas ref={canvasRef} />
+//       </div>
 //     </div>
 //   )
 // }
@@ -53,23 +104,24 @@ import { useDesigner } from "@/stores/designer.context"
 
 export default function StickerCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   const {
     setCanvas,
     setSelectedObject,
-    saveSnapshot
+    saveSnapshot,
   } = useDesigner()
 
   useEffect(() => {
-    if (!canvasRef.current) return
+    if (!canvasRef.current || !containerRef.current) return
 
-    const size = 420
+    const size = containerRef.current.clientWidth
 
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: size,
       height: size,
       backgroundColor: "#ffffff",
-      preserveObjectStacking: true
+      preserveObjectStacking: true,
     })
 
     /* ------------------ Circular Clip Mask ------------------ */
@@ -79,7 +131,7 @@ export default function StickerCanvas() {
       top: size / 2,
       originX: "center",
       originY: "center",
-      absolutePositioned: true
+      absolutePositioned: true,
     })
 
     canvas.clipPath = clipCircle
@@ -92,11 +144,11 @@ export default function StickerCanvas() {
     fabric.Object.prototype.cornerSize = 8
 
     /* ------------------ Selection Events ------------------ */
-    canvas.on("selection:created", e =>
+    canvas.on("selection:created", (e) =>
       setSelectedObject(e.selected?.[0] || null)
     )
 
-    canvas.on("selection:updated", e =>
+    canvas.on("selection:updated", (e) =>
       setSelectedObject(e.selected?.[0] || null)
     )
 
@@ -104,226 +156,59 @@ export default function StickerCanvas() {
       setSelectedObject(null)
     )
 
-    /* ------------------ Undo Snapshot ------------------ */
-    canvas.on("object:modified", () => {
-      saveSnapshot()
-    })
-
-    canvas.on("object:added", () => {
-      saveSnapshot()
-    })
-
-    canvas.on("object:removed", () => {
-      saveSnapshot()
-    })
-
-    
-    // canvas.on("mouse:up", () => {
-    //   saveSnapshot()
-    // })
+    /* ------------------ Undo Snapshots ------------------ */
+    canvas.on("object:added", saveSnapshot)
+    canvas.on("object:modified", saveSnapshot)
+    canvas.on("object:removed", saveSnapshot)
 
     /* ------------------ Register Canvas ------------------ */
     setCanvas(canvas)
+
+    /* ------------------ Load Draft ------------------ */
+    const raw = localStorage.getItem("sticker-designer-draft")
+
+    if (raw) {
+      canvas.loadFromJSON(JSON.parse(raw), () => {
+        canvas.calcOffset()
+        requestAnimationFrame(() => {
+          canvas.requestRenderAll()
+        })
+      })
+    }
+
     saveSnapshot()
-    
+
     return () => {
       canvas.dispose()
     }
   }, [])
 
   return (
-    <div className="relative">
-      <div className="rounded-full bg-white shadow-2xl p-4">
+    <div className="relative flex justify-center">
+      {/* <div
+        ref={containerRef}
+        className="
+          rounded-full bg-white shadow-2xl border border-gray-400
+          w-[280px] h-[280px]
+          sm:w-[320px] sm:h-[320px]
+          md:w-[420px] md:h-[420px]
+        "
+      > */}
+      <div
+        ref={containerRef}
+        className="
+          rounded-full
+          bg-white
+          border border-gray-300
+          shadow-xl
+          overflow-hidden
+          mx-auto
+          sm:w-[320px] sm:h-[320px]
+          md:w-[420px] md:h-[420px]
+        "
+      >
         <canvas ref={canvasRef} />
       </div>
     </div>
   )
 }
-
-
-
-// "use client"
-
-// import { useEffect, useRef } from "react"
-// import * as fabric from "fabric"
-// import { useDesigner } from "@/stores/designer.context"
-
-// export default function StickerCanvas() {
-//   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-
-//   const {
-//     setCanvas,
-//     setSelectedObject,
-//     saveState
-//   } = useDesigner()
-
-//   // Store saveState in a ref so we always have the latest version
-//   const saveStateRef = useRef(saveState)
-  
-//   useEffect(() => {
-//     saveStateRef.current = saveState
-//   }, [saveState])
-
-//   useEffect(() => {
-//     if (!canvasRef.current) return
-
-//     const size = 420
-
-//     const canvas = new fabric.Canvas(canvasRef.current, {
-//       width: size,
-//       height: size,
-//       backgroundColor: "#ffffff",
-//       preserveObjectStacking: true
-//     })
-
-//     /* ------------------ Circular Clip Mask ------------------ */
-//     const clipCircle = new fabric.Circle({
-//       radius: size / 2,
-//       left: size / 2,
-//       top: size / 2,
-//       originX: "center",
-//       originY: "center",
-//       absolutePositioned: true
-//     })
-
-//     canvas.clipPath = clipCircle
-
-//     /* ------------------ Selection Styling ------------------ */
-//     fabric.Object.prototype.transparentCorners = false
-//     fabric.Object.prototype.cornerStyle = "circle"
-//     fabric.Object.prototype.cornerColor = "#000"
-//     fabric.Object.prototype.borderColor = "#000"
-//     fabric.Object.prototype.cornerSize = 8
-
-//     /* ------------------ Selection Events ------------------ */
-//     canvas.on("selection:created", e =>
-//       setSelectedObject(e.selected?.[0] || null)
-//     )
-
-//     canvas.on("selection:updated", e =>
-//       setSelectedObject(e.selected?.[0] || null)
-//     )
-
-//     canvas.on("selection:cleared", () =>
-//       setSelectedObject(null)
-//     )
-
-//     /* ------------------ History Events (Undo / Redo) ------------------ */
-//     const handleHistoryEvent = () => {
-//       saveStateRef.current()
-//     }
-
-//     canvas.on("object:added", handleHistoryEvent)
-//     canvas.on("object:modified", handleHistoryEvent)
-//     canvas.on("object:removed", handleHistoryEvent)
-
-//     /* ------------------ Register Canvas ------------------ */
-//     setCanvas(canvas)
-
-//     /* ------------------ Cleanup ------------------ */
-//     return () => {
-//       void canvas.dispose()
-//     }
-//   }, [setCanvas, setSelectedObject])
-
-//   return (
-//     <div className="relative">
-//       <div className="rounded-full bg-white shadow-2xl p-4">
-//         <canvas ref={canvasRef} />
-//       </div>
-//     </div>
-//   )
-// }
-
-
-// "use client"
-
-// import { useEffect, useRef } from "react"
-// import * as fabric from "fabric"
-// import { useDesigner } from "@/stores/designer.context"
-
-// export default function StickerCanvas() {
-//   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-
-//   const {
-//     setCanvas,
-//     setSelectedObject,
-//     saveState
-//   } = useDesigner()
-
-//   // Store saveState in a ref so we always have the latest version
-//   const saveStateRef = useRef(saveState)
-  
-//   useEffect(() => {
-//     saveStateRef.current = saveState
-//   }, [saveState])
-
-//   useEffect(() => {
-//     if (!canvasRef.current) return
-
-//     const size = 420
-
-//     const canvas = new fabric.Canvas(canvasRef.current, {
-//       width: size,
-//       height: size,
-//       backgroundColor: "#ffffff",
-//       preserveObjectStacking: true
-//     })
-
-//     /* ------------------ Circular Clip Mask ------------------ */
-//     const clipCircle = new fabric.Circle({
-//       radius: size / 2,
-//       left: size / 2,
-//       top: size / 2,
-//       originX: "center",
-//       originY: "center",
-//       absolutePositioned: true
-//     })
-
-//     canvas.clipPath = clipCircle
-
-//     /* ------------------ Selection Styling ------------------ */
-//     fabric.Object.prototype.transparentCorners = false
-//     fabric.Object.prototype.cornerStyle = "circle"
-//     fabric.Object.prototype.cornerColor = "#000"
-//     fabric.Object.prototype.borderColor = "#000"
-//     fabric.Object.prototype.cornerSize = 8
-
-//     /* ------------------ Selection Events ------------------ */
-//     canvas.on("selection:created", e =>
-//       setSelectedObject(e.selected?.[0] || null)
-//     )
-
-//     canvas.on("selection:updated", e =>
-//       setSelectedObject(e.selected?.[0] || null)
-//     )
-
-//     canvas.on("selection:cleared", () =>
-//       setSelectedObject(null)
-//     )
-
-//     /* ------------------ History Events (Only for modifications) ------------------ */
-//     const handleModified = () => {
-//       saveStateRef.current()
-//     }
-
-//     // Only listen to object:modified for drag/resize/rotate
-//     canvas.on("object:modified", handleModified)
-
-//     /* ------------------ Register Canvas ------------------ */
-//     setCanvas(canvas)
-
-//     /* ------------------ Cleanup ------------------ */
-//     return () => {
-//       void canvas.dispose()
-//     }
-//   }, [setCanvas, setSelectedObject])
-
-//   return (
-//     <div className="relative">
-//       <div className="rounded-full bg-white shadow-2xl p-4">
-//         <canvas ref={canvasRef} />
-//       </div>
-//     </div>
-//   )
-// }

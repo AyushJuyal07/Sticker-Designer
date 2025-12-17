@@ -1,53 +1,59 @@
 "use client"
 
-import ImageUploader from "../ImageUploader"
-import TextControls from "../TextControls"
-
-// export default function Toolbar() {
-//   return (
-//     <aside className="w-64 bg-white border-r p-4 space-y-6">
-//       <h2 className="text-lg font-semibold">Tools</h2>
-
-//       <ImageUploader />
-
-//       <TextControls />
-//     </aside>
-//   )
-// }
-
-
-// export default function Toolbar() {
-//   return (
-//     <aside className="w-72 bg-white border-r px-4 py-6 space-y-6 shadow-sm">
-//       <h2 className="text-lg text-black font-semibold tracking-tight">
-//         Sticker Tools
-//       </h2>
-
-//       <ImageUploader />
-//       <TextControls />
-//     </aside>
-//   )
-// }
+import CanvasControls from "../CanvasControls"
+import CropControls from "../Image/CropControls"
+import ExportButton from "../Exports/ExportButton"
+import ImageUploader from "../Image/ImageUploader"
+import LayerControls from "../TopNavbar/LayerControls"
+// import TextControls from "../Text/TextControls"
+import { DeleteControls } from "../TopNavbar/DeleteControls"
+import DraftControls from "../TopNavbar/DraftControls"
+import Templates from "../Templates"
+import ToolSection from "../ToolSection"
+import { useDesigner } from "@/stores/designer.context"
+import AddTextButton from "../Text/AddTextButton"
+import TextEditControls from "../Text/TextEditControls"
 
 
-import UndoRedoControls from "../UndoRedo/UndoRedoControls"
+
+
+// import UndoRedoControls from "../UndoRedo/UndoRedoControls"
 
 export default function Toolbar() {
+  const { selectedObject } = useDesigner()
   return (
-    <aside className="w-72 bg-white border-r px-4 py-6 space-y-6 shadow-sm">
-      <h2 className="text-lg font-semibold tracking-tight">
+    <aside className="w-72 shrink-0 h-full overflow-y-auto bg-white border-r px-4 py-6 space-y-6 shadow-sm">
+      <h2 className="text-lg text-gray-900 font-semibold tracking-tight">
         Sticker Tools
       </h2>
 
+      {/* <CanvasControls /> */}
+      <div className="hidden md:block space-y-4">
+        <ImageUploader />
+        <AddTextButton />
+      </div>
 
-      {/* Image Upload */}
-      <ImageUploader />
+      {/* <ImageUploader />
+      <AddTextButton /> */}
+      <ToolSection
+        title="Edit Image"
+        enabled={selectedObject?.type === "image"}
+      >
+        <CropControls />
+      </ToolSection>
 
-      {/* Text Controls */}
-      <TextControls />
-      
-      {/* Undo / Redo */}
-      <UndoRedoControls />
+      <ToolSection
+        title="Edit Text"
+        enabled={selectedObject?.type === "textbox"}
+      >
+        <TextEditControls />
+      </ToolSection>
+
+
+
+      <Templates />
+      <ExportButton />
+
     </aside>
   )
 }

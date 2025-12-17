@@ -510,22 +510,6 @@ export function DesignerProvider({ children }: { children: React.ReactNode }) {
   }
 
   /* ------------------ Undo ------------------ */
-//   const undo = () => {
-//     if (!canvas) return
-//     if (historyRef.current.length < 2) return
-
-//     isRestoringRef.current = true
-
-//     // Remove current state
-//     historyRef.current.pop()
-
-//     const prev = historyRef.current.at(-1)!
-//     canvas.loadFromJSON(prev, () => {
-//       canvas.renderAll()
-//       setSelectedObject(null)
-//       isRestoringRef.current = false
-//     })
-//   }
 
     const undo = () => {
     if (!canvas) return
