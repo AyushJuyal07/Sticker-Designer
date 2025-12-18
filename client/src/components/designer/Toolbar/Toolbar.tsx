@@ -13,6 +13,7 @@ import ToolSection from "../ToolSection"
 import { useDesigner } from "@/stores/designer.context"
 import AddTextButton from "../Text/AddTextButton"
 import TextEditControls from "../Text/TextEditControls"
+import ProceedButton from "../ProceedButton"
 
 
 
@@ -62,9 +63,21 @@ export default function Toolbar() {
       </ToolSection>
 
 
-
+      <ToolSection
+        title="Template"
+        enabled={true}
+      >
       <Templates />
+      </ToolSection>
+
+            <ToolSection
+        title="Export"
+        enabled={true}
+      >
       <ExportButton />
+      </ToolSection>
+      
+      <ProceedButton />
 
     </aside>
   )

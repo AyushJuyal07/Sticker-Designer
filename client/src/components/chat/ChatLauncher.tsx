@@ -71,6 +71,7 @@ export default function ChatLauncher({
         hover:scale-105
         active:scale-95
         transition
+        cursor-pointer
       "
     >
       <MessageCircle size={20} />

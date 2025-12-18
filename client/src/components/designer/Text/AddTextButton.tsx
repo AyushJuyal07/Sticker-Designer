@@ -29,7 +29,7 @@ export default function AddTextButton() {
       onClick={addText}
       className="
         w-full rounded bg-black px-3 py-2
-        text-sm text-white active:scale-95 transition
+        text-sm text-white hover:bg-white hover:text-black cursor-pointer border active:scale-95 transition
       "
     >
       Add Text

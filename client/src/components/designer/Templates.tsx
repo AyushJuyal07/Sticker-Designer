@@ -16,9 +16,9 @@ export default function Templates() {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-semibold text-black">
+      {/* <h3 className="text-xs font-semibold text-black">
         Templates
-      </h3>
+      </h3> */}
 
       <div className="grid grid-cols-3 gap-2 text-gray-900">
         {templates.map(t => (
