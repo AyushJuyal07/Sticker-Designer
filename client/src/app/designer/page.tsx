@@ -110,10 +110,12 @@ import Toolbar from "@/components/designer/Toolbar/Toolbar"
 import TopNavbar from "@/components/designer/TopNavbar/TopNavbar"
 import MobilePrimaryActions from "@/components/designer/Mobile/MobilePrimaryActions"
 import MobileBottomToolbar from "@/components/designer/Mobile/MobileBottomToolbar"
+import ChatLauncher from "@/components/chat/ChatLauncher"
+import ChatWidget from "@/components/chat/ChatWidget"
 
 export default function DesignerPage() {
   const [toolbarOpen, setToolbarOpen] = useState(false)
-
+  const [chatOpen, setChatOpen] = useState(false)
   return (
     <DesignerProvider>
       <div className="flex h-screen overflow-hidden bg-[#FFEFEF]">
@@ -142,9 +144,7 @@ export default function DesignerPage() {
             </div>
 
             {/* Mobile primary actions */}
-            <MobilePrimaryActions
-              onOpenToolbar={() => setToolbarOpen(true)}
-            />
+            <MobilePrimaryActions />
 
           </div>
         </main>
@@ -157,6 +157,9 @@ export default function DesignerPage() {
         />
 
       </div>
+            {/* ✅ CHAT WIDGET (FLOATING, GLOBAL) */}
+      <ChatLauncher onToggle={() => setChatOpen(prev => !prev)} />
+      <ChatWidget open={chatOpen} onClose={() => setChatOpen(false)} />
     </DesignerProvider>
   )
 }

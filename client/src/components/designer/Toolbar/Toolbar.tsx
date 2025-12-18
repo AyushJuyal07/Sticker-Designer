@@ -22,7 +22,19 @@ import TextEditControls from "../Text/TextEditControls"
 export default function Toolbar() {
   const { selectedObject } = useDesigner()
   return (
-    <aside className="w-72 shrink-0 h-full overflow-y-auto bg-white border-r px-4 py-6 space-y-6 shadow-sm">
+    <aside   className="
+    w-full
+    md:w-72
+    shrink-0
+    h-full
+    overflow-y-auto
+    bg-white
+    md:border-r
+    px-4
+    py-6
+    space-y-8
+    shadow-sm
+  ">
       <h2 className="text-lg text-gray-900 font-semibold tracking-tight">
         Sticker Tools
       </h2>

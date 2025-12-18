@@ -82,7 +82,7 @@ export default function MobileBottomToolbar({
       )}
 
       {/* Collapsed bottom bar (VISIBLE WHEN CLOSED) */}
-      {!open && (
+      {/* {!open && (
         <div
           onClick={onOpen}
           className="
@@ -103,7 +103,37 @@ export default function MobileBottomToolbar({
           Sticker Tools
           <ChevronUp size={16} />
         </div>
+      )} */}
+      {/* Floating Sticker Tools button (mobile only) */}
+      {!open && (
+        <div
+          className="
+            fixed bottom-4 left-1/2 -translate-x-1/2 z-50
+            md:hidden
+          "
+        >
+          <button
+            onClick={onOpen}
+            className="
+              h-12 px-4
+              w-[280px]
+              flex items-center justify-center gap-2
+              rounded-xl
+              bg-white
+              text-black
+              
+              shadow-sm
+              text-sm font-semibold
+              active:scale-95
+              transition
+            "
+          >
+            Sticker Tools
+            <ChevronUp size={16} />
+          </button>
+        </div>
       )}
+
 
       {/* Slide-up panel */}
       <div
@@ -128,8 +158,8 @@ export default function MobileBottomToolbar({
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 pb-2 border-b">
-          <h3 className="text-sm font-semibold">Sticker Tools</h3>
-          <button onClick={onClose}>
+          {/* <h3 className="text-sm font-semibold">Sticker Tools</h3> */}
+          <button className="text-black" onClick={onClose}>
             <X size={18} />
           </button>
         </div>
