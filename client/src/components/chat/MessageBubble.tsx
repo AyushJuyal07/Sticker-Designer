@@ -1,6 +1,6 @@
 "use client"
 
-import { ChatMessage } from "@shared/chat.types"
+import { ChatMessage } from "@/types/chat.types"
 import { Check, AlertCircle, CheckCheck } from "lucide-react"
 
 type Props = {

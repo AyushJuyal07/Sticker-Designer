@@ -17,10 +17,10 @@ export default function DesignerPage() {
   const [chatOpen, setChatOpen] = useState(false);
   return (
     <DesignerProvider>
-      {/* <div className="flex h-screen overflow-hidden bg-[#FFEFEF]"> */}
+      <div className="flex h-screen overflow-hidden bg-[#FFEFEF]">
 
 
-      <div
+      {/* <div
         className="flex h-screen overflow-hidden"
         style={{
           backgroundColor: "#FFEFEF",
@@ -31,7 +31,7 @@ export default function DesignerPage() {
           backgroundSize: "128px 128px",
           backgroundPosition: "0 0, 64px 64px",
         }}
-      >
+      > */}
         {/* DESKTOP SIDEBAR */}
         <aside className="hidden md:block">
           <Toolbar />

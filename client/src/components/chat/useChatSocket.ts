@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { createSocket } from "@/lib/socket/socket"
-import { ChatMessage, ClientToServerEvents,ServerToClientEvents } from "@shared/chat.types"
+import { ChatMessage, ClientToServerEvents,ServerToClientEvents } from "@/types/chat.types"
 import { Socket } from "socket.io-client"
 
 export function useChatSocket(

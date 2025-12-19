@@ -1,6 +1,6 @@
 "use client"
 
-import { ChatMessage } from "@shared/chat.types"
+import { ChatMessage } from "@/types/chat.types"
 import MessageBubble from "./MessageBubble"
 import { useEffect, useRef } from "react"
 
