@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
-} from "../../../shared/chat.types"
+} from "../types/chat.types"
 
 export default function chatHandlers(
   io: Server<ClientToServerEvents, ServerToClientEvents>,

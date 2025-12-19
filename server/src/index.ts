@@ -7,7 +7,7 @@ import chatHandlers from "./socket/chat.handlers";
 import {
   ClientToServerEvents,
   ServerToClientEvents,
-} from "../../shared/chat.types";
+} from "./types/chat.types";
 
 dotenv.config();
 
