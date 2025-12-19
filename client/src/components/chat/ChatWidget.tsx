@@ -5,7 +5,7 @@ import ChatMessages from "./ChatMessages"
 import ChatInput from "./ChatInput"
 import TypingIndicator from "./TypingIndicator"
 import { useChatSocket } from "./useChatSocket"
-import { ChatMessage } from "@shared/chat.types"
+import { ChatMessage } from "@/types/chat.types"
 import { v4 as uuidv4 } from "uuid"
 
 
