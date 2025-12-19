@@ -1,14 +1,18 @@
 import { StickerSize } from "@/stores/order.context"
 
-const PRICE_MAP: Record<StickerSize, number> = {
+export const PRICE_MAP: Record<StickerSize, number> = {
   S: 10,
   M: 15,
   L: 20,
 }
 
-export function calculateTotal(
+export function getUnitPrice(size: StickerSize) {
+  return PRICE_MAP[size]
+}
+
+export function calculateLineTotal(
   size: StickerSize,
   quantity: number
 ) {
-  return PRICE_MAP[size] * quantity
+  return getUnitPrice(size) * quantity
 }

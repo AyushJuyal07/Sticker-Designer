@@ -6,11 +6,15 @@ import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const { items, removeItem, clearCart } = useCart();
-
+  
   const router = useRouter();
-
-  const grandTotal = items.reduce((sum, item) => sum + item.price, 0);
-
+  
+  const grandTotal = items.reduce((sum, item) => sum + item.unitPrice, 0);
+  
+  const handleCheckout = () => {
+    if (items.length === 0) return
+    router.push("/invoice")
+  }
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-[#FFEFEF] flex items-center justify-center">
@@ -55,7 +59,7 @@ export default function CartPage() {
                 key={item.id}
                 className="flex items-center gap-6 border-b pb-6 last:border-none"
               >
-                <div className="rounded-full border-2">
+                <div className="rounded-full border">
                   <Image
                     src={item.preview}
                     alt="Sticker preview"
@@ -76,7 +80,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="text-right space-y-2">
-                  <p className="font-medium text-gray-900">₹{item.price}</p>
+                  <p className="font-medium text-gray-900">₹{item.unitPrice}</p>
 
                   <button
                     onClick={() => removeItem(item.id)}
@@ -106,7 +110,7 @@ export default function CartPage() {
             </div>
 
             <button
-              onClick={clearCart}
+              onClick={handleCheckout}
               className="
                 w-full mt-4
                 py-3 rounded-full
@@ -119,7 +123,7 @@ export default function CartPage() {
                 cursor-pointer
               "
             >
-              Checkout
+              Check Invoice
             </button>
           </div>
         </div>

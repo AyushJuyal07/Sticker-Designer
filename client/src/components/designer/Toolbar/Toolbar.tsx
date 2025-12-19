@@ -30,7 +30,7 @@ export default function Toolbar() {
     h-full
     overflow-y-auto
     bg-white
-    md:border-r
+    
     px-4
     py-6
     space-y-8

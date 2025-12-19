@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { useOrder } from "@/stores/order.context"
 import { useCart } from "@/stores/cart.context"
-import { calculateTotal } from "@/lib/order/pricing"
+import { calculateLineTotal, getUnitPrice, PRICE_MAP  } from "@/lib/order/pricing"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { v4 as uuidv4 } from "uuid"
@@ -19,22 +19,13 @@ export default function SummaryPage() {
   const router = useRouter()
 
 
-  const total = calculateTotal(order.size, order.quantity)
+  const total = calculateLineTotal(order.size, order.quantity)
 
   const isValid =
     !!order.preview &&
     order.quantity >= 1 &&
     !!order.size
 
-//   const handleAddToCart = () => {
-//     if (!isValid) {
-//       toast.error("Please complete your order details")
-//       return
-//     }
-
-//     toast.success("Added to cart")
-//     // 🚀 Next step: navigate to cart page
-//   }
 const handleAddToCart = () => {
   if (!isValid) {
     toast.error("Please complete your order details")
@@ -46,7 +37,7 @@ const handleAddToCart = () => {
     preview: order.preview!,
     size: order.size,
     quantity: order.quantity,
-    price: total,
+    unitPrice: PRICE_MAP[order.size],
   })
 
   toast.success("Added to cart")

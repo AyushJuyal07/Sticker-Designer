@@ -137,7 +137,7 @@ export default function ChatWidget({
       className={`
         ${isAdmin ? "relative" : "fixed bottom-20 right-4 z-50"}
         h-[500px] w-[320px] max-w-[90vw]
-        bg-white rounded-xl border shadow-2xl
+        bg-white rounded-xl shadow-2xl
         flex flex-col
         transform transition-all duration-300
         ${forceOpen || open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}

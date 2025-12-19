@@ -65,7 +65,7 @@ export default function TopNavbar() {
         className="
           h-12 px-2
           flex items-center gap-2
-          rounded-xl border bg-white shadow-sm
+          rounded-xl bg-white shadow-sm
         "
       >
         {/* LEFT – Layer controls */}
