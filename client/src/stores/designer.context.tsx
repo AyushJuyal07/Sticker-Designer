@@ -1,68 +1,72 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useRef, useState } from "react"
-import * as fabric from "fabric"
+import { createContext, useContext, useRef, useState } from "react";
+import * as fabric from "fabric";
 
 type DesignerContextType = {
-  canvas: fabric.Canvas | null
-  setCanvas: (c: fabric.Canvas) => void
+  canvas: fabric.Canvas | null;
+  setCanvas: (c: fabric.Canvas) => void;
 
-  selectedObject: fabric.Object | null
-  setSelectedObject: (obj: fabric.Object | null) => void
+  selectedObject: fabric.Object | null;
+  setSelectedObject: (obj: fabric.Object | null) => void;
 
-  saveSnapshot: () => void
-  undo: () => void
-}
+  isCropping: boolean;
+  setIsCropping: (v: boolean) => void;
 
-const DesignerContext = createContext<DesignerContextType | null>(null)
+  saveSnapshot: () => void;
+  undo: () => void;
+};
+
+const DesignerContext = createContext<DesignerContextType | null>(null);
 
 export function DesignerProvider({ children }: { children: React.ReactNode }) {
-  const [canvas, setCanvasState] = useState<fabric.Canvas | null>(null)
-  const [selectedObject, setSelectedObject] =
-    useState<fabric.Object | null>(null)
+  const [canvas, setCanvasState] = useState<fabric.Canvas | null>(null);
+  const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(
+    null
+  );
 
-  const historyRef = useRef<string[]>([])
-  const isRestoringRef = useRef(false)
+  const [isCropping, setIsCropping] = useState(false);
+
+  const historyRef = useRef<string[]>([]);
+  const isRestoringRef = useRef(false);
 
   /* ------------------ Canvas Setup ------------------ */
   const setCanvas = (c: fabric.Canvas) => {
-    setCanvasState(c)
+    setCanvasState(c);
 
     // ✅ CRITICAL: initial snapshot
-    historyRef.current = [
-      JSON.stringify(c.toDatalessJSON())
-    ]
-  }
+    historyRef.current = [JSON.stringify(c.toDatalessJSON())];
+  };
 
   /* ------------------ Snapshot ------------------ */
   const saveSnapshot = () => {
-    if (!canvas) return
-    if (isRestoringRef.current) return
+    if (!canvas) return;
+    if (isRestoringRef.current) return;
 
-    const json = JSON.stringify(canvas.toDatalessJSON())
-    const last = historyRef.current.at(-1)
+    const json = JSON.stringify(canvas.toDatalessJSON());
+    const last = historyRef.current.at(-1);
 
     // Prevent duplicate snapshots
-    if (json === last) return
+    if (json === last) return;
 
-    historyRef.current.push(json)
-  }
+    historyRef.current.push(json);
+  };
 
   /* ------------------ Undo ------------------ */
 
-    const undo = () => {
-    if (!canvas) return
-    if (historyRef.current.length <= 1) return
+  const undo = () => {
+    if (!canvas) return;
+    if (historyRef.current.length <= 1) return;
 
-    isRestoringRef.current = true
-    historyRef.current.pop()
+    isRestoringRef.current = true;
+    historyRef.current.pop();
 
-    const prev = historyRef.current.at(-1)!
+    const prev = historyRef.current.at(-1)!;
     canvas.loadFromJSON(prev, () => {
-        canvas.renderAll()
-        isRestoringRef.current = false
-    })
-    }
+      canvas.renderAll();
+      isRestoringRef.current = false;
+    });
+  };
 
   return (
     <DesignerContext.Provider
@@ -71,20 +75,21 @@ export function DesignerProvider({ children }: { children: React.ReactNode }) {
         setCanvas,
         selectedObject,
         setSelectedObject,
+        isCropping,
+        setIsCropping,
         saveSnapshot,
-        undo
+        undo,
       }}
     >
       {children}
     </DesignerContext.Provider>
-  )
+  );
 }
 
 export function useDesigner() {
-  const ctx = useContext(DesignerContext)
+  const ctx = useContext(DesignerContext);
   if (!ctx) {
-    throw new Error("useDesigner must be used inside DesignerProvider")
+    throw new Error("useDesigner must be used inside DesignerProvider");
   }
-  return ctx
+  return ctx;
 }
-

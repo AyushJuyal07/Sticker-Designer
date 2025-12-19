@@ -29,14 +29,14 @@ export default function ExportPreviewModal({
         <div className="mt-4 flex gap-2">
           <button
             onClick={onCancel}
-            className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm"
+            className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm cursor-pointer"
           >
             Cancel
           </button>
 
           <button
             onClick={onConfirm}
-            className="flex-1 rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700"
+            className="flex-1 rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 cursor-pointer"
           >
             Download
           </button>

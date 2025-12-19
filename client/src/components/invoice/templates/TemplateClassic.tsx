@@ -7,7 +7,7 @@ export default function TemplateClassic({ invoice }: any) {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-2xl font-bold">Groviews Technologies</h1>
+          <h1 className="text-2xl font-bold">Sticker Technologies</h1>
           <p className="text-sm">Custom Sticker Solutions</p>
         </div>
 

@@ -29,6 +29,7 @@ export default function Templates() {
               flex flex-col items-center gap-1
               rounded border p-2 text-xs
               hover:bg-gray-50 active:scale-95 transition
+              cursor-pointer
             "
           >
             <div

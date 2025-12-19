@@ -2,6 +2,7 @@
 
 import * as fabric from "fabric"
 import { useDesigner } from "@/stores/designer.context"
+import { toast } from "sonner"
 
 export default function AddTextButton() {
   const { canvas } = useDesigner()
@@ -22,6 +23,7 @@ export default function AddTextButton() {
     canvas.add(textbox)
     canvas.setActiveObject(textbox)
     canvas.requestRenderAll()
+    toast.success("Text added")
   }
 
   return (

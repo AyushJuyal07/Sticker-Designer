@@ -18,7 +18,7 @@ export default function TemplateModern({ invoice }: any) {
       {/* Company */}
       <div className="flex justify-between text-sm">
         <div>
-          <p className="font-semibold">Groviews Technologies</p>
+          <p className="font-semibold">Sticker Technologies</p>
           <p>Custom Sticker Solutions</p>
         </div>
 

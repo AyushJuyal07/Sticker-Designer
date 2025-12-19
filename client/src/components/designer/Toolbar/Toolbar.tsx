@@ -21,7 +21,7 @@ import ProceedButton from "../ProceedButton"
 // import UndoRedoControls from "../UndoRedo/UndoRedoControls"
 
 export default function Toolbar() {
-  const { selectedObject } = useDesigner()
+  const { selectedObject, isCropping } = useDesigner()
   return (
     <aside   className="
     w-full
@@ -50,7 +50,7 @@ export default function Toolbar() {
       <AddTextButton /> */}
       <ToolSection
         title="Edit Image"
-        enabled={selectedObject?.type === "image"}
+        enabled={selectedObject?.type === "image" || isCropping}
       >
         <CropControls />
       </ToolSection>
