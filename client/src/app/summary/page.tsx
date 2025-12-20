@@ -48,12 +48,10 @@ const handleAddToCart = () => {
     <div className="min-h-screen bg-[#FFEFEF] px-4 py-8">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 space-y-6">
 
-        {/* Title */}
         <h1 className="text-lg font-semibold text-gray-900">
           Design Summary
         </h1>
 
-        {/* Sticker Preview */}
         {order.preview ? (
           <div className="flex justify-center">
             <div className="border-2 rounded-full">
@@ -73,7 +71,6 @@ const handleAddToCart = () => {
           </div>
         )}
 
-        {/* Size Selector */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-900">Size</label>
           <div className="flex gap-2">
@@ -96,7 +93,6 @@ const handleAddToCart = () => {
           </div>
         </div>
 
-        {/* Quantity Selector */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-900">Quantity</label>
           <input
@@ -108,20 +104,17 @@ const handleAddToCart = () => {
           />
         </div>
 
-        {/* Price */}
         <div className="flex justify-between items-center text-sm font-medium text-gray-900">
           <span>Total Price</span>
           <span>₹{total}</span>
         </div>
 
-        {/* Validation message */}
         {!isValid && (
           <p className="text-xs text-red-500">
             Please complete your design before proceeding
           </p>
         )}
 
-        {/* Add to Cart */}
 
         <div className="flex justify-center">
             <button

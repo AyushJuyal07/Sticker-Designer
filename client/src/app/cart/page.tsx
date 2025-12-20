@@ -26,7 +26,6 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-[#FFEFEF] px-6 py-8">
       <div className="max-w-5xl mx-auto h-full flex flex-col">
-        {/* Page Title */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-xl font-semibold text-gray-900">Your Cart</h1>
 

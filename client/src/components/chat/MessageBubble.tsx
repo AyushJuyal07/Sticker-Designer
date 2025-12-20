@@ -50,4 +50,3 @@ export default function MessageBubble({ message, role }: Props) {
     </div>
   )
 }
-

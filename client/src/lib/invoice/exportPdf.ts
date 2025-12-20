@@ -8,10 +8,6 @@ export async function exportInvoicePdf(
   const element = document.getElementById(elementId)
   if (!element) return
 
-//   const canvas = await html2canvas(element, {
-//     scale: 2,
-//     useCORS: true,
-//   })
 
 const canvas = await html2canvas(element, {
   scale: 2,

@@ -34,7 +34,7 @@ export default function MobileBottomToolbar({
             onClick={onOpen}
             className="
               h-12 px-4
-              w-[280px]
+              w-[220px]
               flex items-center justify-center gap-2
               rounded-xl
               bg-white

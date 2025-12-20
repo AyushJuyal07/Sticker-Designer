@@ -1,45 +1,8 @@
-// "use client"
-
-// import { exportInvoicePdf } from "@/lib/invoice/exportPdf"
-// import { toast } from "sonner"
-
-// export default function InvoiceActions() {
-//   return (
-//     <div className="flex justify-end gap-3 mb-4">
-//       <button
-//         onClick={() => exportInvoicePdf("invoice-pdf")}
-//         className="px-4 py-2 rounded-lg bg-black text-white text-sm border cursor-pointer
-//             hover:bg-white hover:text-black active:scale-95 transition"
- 
-        
-//       >
-//         Download PDF
-//       </button>
-
-//       <button
-//         onClick={() => window.print()}
-//         className="px-4 py-2 rounded-lg border text-sm cursor-pointer
-//             hover:bg-black hover:text-white active:scale-95 transition"
-//       >
-//         Print
-//       </button>
-
-//       <button
-//         onClick={() => toast.success("Invoice emailed (simulated)")}
-//         className="px-4 py-2 rounded-lg border text-sm cursor-pointer
-//             hover:bg-black hover:text-white active:scale-95 transition"
-//       >
-//         Email Invoice
-//       </button>
-//     </div>
-//   )
-// }
-
-
 "use client"
 
 import { exportInvoicePdf } from "@/lib/invoice/exportPdf"
 import { toast } from "sonner"
+import { Download, Printer, Mail, LayoutTemplate } from "lucide-react" 
 
 export default function InvoiceActions({
   template,
@@ -51,45 +14,62 @@ export default function InvoiceActions({
   return (
     <div className="flex justify-between items-center mb-4">
       
-      {/* Template Switch */}
+
       <div className="flex gap-2">
         {(["classic", "modern"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTemplate(t)}
+            aria-label={`Switch to ${t} template`} 
             className={`px-4 py-2 rounded-full text-sm border cursor-pointer
+              flex items-center gap-2
               ${template === t ? "bg-black text-white" : "bg-white"}
             `}
           >
-            {t}
+
+            <LayoutTemplate size={16} />
+
+
+            <span className="hidden sm:inline capitalize">{t}</span>
           </button>
         ))}
       </div>
 
-      {/* Actions */}
+
       <div className="flex gap-3">
+     
         <button
           onClick={() => exportInvoicePdf("invoice-pdf")}
+          aria-label="Download invoice PDF" 
           className="px-4 py-2 rounded-lg bg-black text-white text-sm border
-            hover:bg-white hover:text-black transition cursor-pointer"
+            hover:bg-white hover:text-black transition cursor-pointer
+            flex items-center gap-2"
         >
-          Download PDF
+          <Download size={16} /> 
+          <span className="hidden sm:inline">Download PDF</span> 
         </button>
+
 
         <button
           onClick={() => window.print()}
+          aria-label="Print invoice"
           className="px-4 py-2 rounded-lg border text-sm
-            hover:bg-black hover:text-white transition cursor-pointer"
+            hover:bg-black hover:text-white transition cursor-pointer
+            flex items-center gap-2"
         >
-          Print
+          <Printer size={16} />
+          <span className="hidden sm:inline">Print</span>
         </button>
 
         <button
           onClick={() => toast.success("Invoice emailed (simulated)")}
+          aria-label="Email invoice"
           className="px-4 py-2 rounded-lg border text-sm
-            hover:bg-black hover:text-white transition cursor-pointer"
+            hover:bg-black hover:text-white transition cursor-pointer
+            flex items-center gap-2"
         >
-          Email Invoice
+          <Mail size={16} />
+          <span className="hidden sm:inline">Email Invoice</span>
         </button>
       </div>
     </div>
