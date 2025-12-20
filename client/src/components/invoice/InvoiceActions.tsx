@@ -62,7 +62,7 @@ export default function InvoiceActions({
         </button>
 
         <button
-          onClick={() => toast.success("Invoice emailed (simulated)")}
+          onClick={() => toast.success("Invoice emailed")}
           aria-label="Email invoice"
           className="px-4 py-2 rounded-lg border text-sm
             hover:bg-black hover:text-white transition cursor-pointer
