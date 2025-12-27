@@ -7,7 +7,7 @@ A **full-stack Circle Sticker Customization & Ordering Platform** built with **N
 ## 🚀 Live Demo
 
 🔗 **Sticker Designer**  
-👉 https://sticker-designer-six.vercel.app/designer
+👉 https://sticker-designer-six.vercel.app/
 
 ---
 
