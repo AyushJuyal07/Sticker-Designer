@@ -1,21 +1,20 @@
-"use client"
+"use client";
 
-import { X } from "lucide-react"
-import ChatMessages from "./ChatMessages"
-import ChatInput from "./ChatInput"
-import TypingIndicator from "./TypingIndicator"
-import { useChatSocket } from "./useChatSocket"
-import { ChatMessage } from "@/types/chat.types"
-import { v4 as uuidv4 } from "uuid"
-
+import { X } from "lucide-react";
+import ChatMessages from "./ChatMessages";
+import ChatInput from "./ChatInput";
+import TypingIndicator from "./TypingIndicator";
+import { useChatSocket } from "./useChatSocket";
+import { ChatMessage } from "@/types/chat.types";
+import { v4 as uuidv4 } from "uuid";
 
 type ChatWidgetProps = {
-  open?: boolean
-  onClose?: () => void
-  chatId: string
-  role: "user" | "agent"
-  forceOpen?: boolean
-}
+  open?: boolean;
+  onClose?: () => void;
+  chatId: string;
+  role: "user" | "agent";
+  forceOpen?: boolean;
+};
 
 export default function ChatWidget({
   open = false,
@@ -24,40 +23,62 @@ export default function ChatWidget({
   role,
   forceOpen = false,
 }: ChatWidgetProps) {
-  const {
-    messages,
-    sendMessage,
-    typingBy,
-    sendTyping,
-    stopTyping,
-  } = useChatSocket(chatId, role)
+  const { messages, sendMessage, typingBy, sendTyping, stopTyping } =
+    useChatSocket(chatId, role);
 
   const handleSend = (text: string) => {
     const msg: ChatMessage = {
       id: uuidv4(),
-      sender: role,          // ✅ USER OR AGENT
+      sender: role, // ✅ USER OR AGENT
       text,
       timestamp: Date.now(),
       status: "sending",
-    }
+    };
 
-    sendMessage(msg)
-  }
+    sendMessage(msg);
+  };
 
-  const isOpen = forceOpen || open
-  const isAdmin = role === "agent"
+  const isOpen = forceOpen || open;
+  const isAdmin = role === "agent";
 
   return (
+    // <div
+    //   className={`
+    //     ${isAdmin ? "relative" : "fixed bottom-20 right-4 z-50"}
+    //     h-[500px] w-[320px] max-w-[90vw]
+    //     bg-white rounded-xl shadow-2xl
+    //     flex flex-col
+    //     transform transition-all duration-300
+    //     ${forceOpen || open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}
+    //   `}
+    // >
 
     <div
       className={`
-        ${isAdmin ? "relative" : "fixed bottom-20 right-4 z-50"}
-        h-[500px] w-[320px] max-w-[90vw]
-        bg-white rounded-xl shadow-2xl
-        flex flex-col
-        transform transition-all duration-300
-        ${forceOpen || open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}
-      `}
+    ${isAdmin ? "relative" : "fixed bottom-20 right-4 z-50"}
+
+    /* Desktop default */
+    h-[500px] w-[320px] max-w-[90vw]
+    rounded-xl
+
+    /* Mobile full screen */
+    max-sm:inset-0
+    max-sm:h-screen
+    max-sm:w-screen
+    max-sm:max-w-none
+    max-sm:bottom-0
+    max-sm:right-0
+    max-sm:rounded-none
+
+    bg-white shadow-2xl
+    flex flex-col
+    transform transition-all duration-300
+    ${
+      forceOpen || open
+        ? "opacity-100 scale-100"
+        : "opacity-0 scale-95 pointer-events-none"
+    }
+  `}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
@@ -80,11 +101,10 @@ export default function ChatWidget({
       </div>
 
       {/* Messages */}
-      <ChatMessages messages={messages} role={role}/>
+      <ChatMessages messages={messages} role={role} />
 
       {/* {typing && <TypingIndicator />} */}
       {typingBy && typingBy !== role && <TypingIndicator />}
-
 
       {/* Input */}
       <ChatInput
@@ -93,5 +113,5 @@ export default function ChatWidget({
         onStopTyping={stopTyping}
       />
     </div>
-  )
+  );
 }
