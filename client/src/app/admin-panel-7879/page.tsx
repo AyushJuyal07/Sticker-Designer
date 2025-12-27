@@ -4,7 +4,7 @@ import ChatWidget from "@/components/chat/ChatWidget"
 
 export default function AdminPanelPage() {
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
+    <div className="h-screen flex items-center justify-center bg-[#F6B1CE]">
 
         <ChatWidget 
           chatId="demo-chat"
